@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from modules.askUser import askUser
 from modules.isSufficientResources import isSufficientResources
+from modules.processCoins import processCoins
 from modules.showReport import showReport
 from rich import print
 from modules import data
@@ -18,14 +19,11 @@ def coffeeMachine():
             work_is_on = False
         elif choice == 'report':
             showReport()
-        elif not choice in coffee_types:
-            print(f"[red]Your choice not in coffee list")
-            work_is_on = False
         else:
-            print(f"[red] Invalid choice")
-            work_is_on = False
-
-        if isSufficientResources(choice):
-            print('sufficient')
+            drink = data.MENU[choice]
+            if isSufficientResources(drink['ingredients']):
+                coins = processCoins()
+                if coins != 0:
+                    print(f"coins: {coins}")
 
 coffeeMachine()
