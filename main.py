@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from modules.askUser import askUser
+from modules.checkTransaction import checkTransaction
 from modules.isSufficientResources import isSufficientResources
 from modules.processCoins import processCoins
 from modules.showReport import showReport
@@ -24,6 +25,15 @@ def coffeeMachine():
             if isSufficientResources(drink['ingredients']):
                 coins = processCoins()
                 if coins != 0:
-                    print(f"coins: {coins}")
+                    money_back = checkTransaction(coins, drink['cost'])
+                    if money_back:
+                        print(f"Here is your {choice}. Enjoy!")
+                        data.money += drink['cost']
+                        data.resources['water'] -= drink['ingredients']['water']
+                        data.resources['coffee'] -= drink['ingredients']['coffee']
+                        if 'milk' in drink['ingredients']:
+                            data.resources['milk'] -= drink['ingredients']['milk']
+                        if money_back > 0:
+                            print(f"Here is ${money_back} in change.")
 
 coffeeMachine()
